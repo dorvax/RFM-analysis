@@ -71,7 +71,7 @@ def rfm(inputfile, outputfile, inputdate):
                               'grand_total': 'monetary_value'}, inplace=True)
 
 
-   quantiles = rfmTable.quantile(q=[0.33,0.66,1])
+   quantiles = rfmTable.quantile(q=[0.25,0.5,0.75]) 
    quantiles = quantiles.to_dict()
 
    rfmSegmentation = rfmTable
@@ -91,25 +91,25 @@ def rfm(inputfile, outputfile, inputdate):
 # We create two classes for the RFM segmentation since, being high recency is bad, while high frequency and monetary value is good. 
 # Arguments (x = value, p = recency, monetary_value, frequency, k = quartiles dict)
 def RClass(x,p,d):
-    if x <= d[p][0.33]:
+    if x <= d[p][0.25]:
         return 1
-    elif x <= d[p][0.66]:
+    elif x <= d[p][0.50]:
         return 2
-    elif x <= d[p][1]: 
+    elif x <= d[p][0.75]: 
         return 3
     else:
-        return 0
+        return 4
     
 # Arguments (x = value, p = recency, monetary_value, frequency, k = quartiles dict)
 def FMClass(x,p,d):
-    if x <= d[p][0.33]:
+    if x <= d[p][0.25]:
+        return 4
+    elif x <= d[p][0.50]:
         return 3
-    elif x <= d[p][0.66]:
+    elif x <= d[p][0.75]: 
         return 2
-    elif x <= d[p][1]: 
-        return 1
     else:
-        return 0
+        return 1
 
 
 
